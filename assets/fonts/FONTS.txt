@@ -1,0 +1,8 @@
+Font used on this site, licensed under the SIL Open Font License, Version 1.1
+(https://openfontlicense.org). It may be used, embedded and redistributed freely;
+it may not be sold on its own.
+
+meta-old-french.ttf
+  Copyright (c) 2019 Luuse
+  Source: https://gitlab.com/Luuse/foundry/meta-old-french
+  File obtained from https://bestfreefonts.com/meta-old-french

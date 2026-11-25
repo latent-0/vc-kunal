@@ -5,17 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kunal Achintya · Investor and board advisor</title>
 <meta name="description" content="Kunal Achintya invests at pre-seed and seed and advises a small number of companies at board level. What he backs, how he works, and how to reach him.">
-<link rel="canonical" href="https://founders.kunalachintya.com/">
-<meta name="theme-color" content="#4a0f1d">
+<link rel="canonical" href="https://ventureboard.kunalachintya.com/">
+<meta name="theme-color" content="#f3e9d6">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%234a0f1d'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='Georgia,serif' font-size='40' fill='%23f3e9d6'%3EK%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/meta-old-french.ttf" as="font" type="font/ttf" crossorigin>
 <style>
+  /* One typeface throughout: Meta Old French (Luuse), self-hosted, SIL Open Font
+     License (see assets/fonts/FONTS.txt). One weight; "@" falls back to Times. */
+  @font-face{font-family:"Meta Old French";src:url(assets/fonts/meta-old-french.ttf) format("truetype");font-weight:400;font-style:normal;font-display:swap}
   /*
     One family (Newsreader), used at three optical sizes:
     display 72 / weight 330, text 16 / weight 420, captions small-caps / weight 520.
-    Two colours, square corners, no shadows, no gradients.
+    Burgundy and cream, with a warm stone gray as the accent.
+    Square corners, no shadows.
   */
   :root{
     --wine:#4a0f1d;
@@ -23,16 +25,20 @@
     --cream:#f3e9d6;
     --cream-2:#e6d8bd;
     --ink:#2b0b13;
-    --rule:rgba(74,15,29,.28);
-    --font:"Newsreader", Georgia, "Times New Roman", serif;
+    --stone:#86817b;    /* warm gray, sampled from the black-and-white portrait */
+    --stone-2:#c9c3ba;
+    --rule:rgba(134,129,123,.38);
+    --font:"Meta Old French", "Times New Roman", Georgia, serif;   /* text */
+    --display:"Meta Old French", "Times New Roman", Georgia, serif; /* headlines */
     --pad:clamp(20px, 6vw, 88px);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
+  section[id]{scroll-margin-top:88px}   /* keep headings clear of the menu circle */
   body{
     background:var(--cream);color:var(--ink);
     font-family:var(--font);font-size:19px;line-height:1.55;
-    font-weight:420;font-variation-settings:"opsz" 16;
+    font-weight:400;font-synthesis:none;
     -webkit-font-smoothing:antialiased;
   }
   ::selection{background:var(--wine);color:var(--cream)}
@@ -41,7 +47,7 @@
   a:focus-visible{outline:2px solid var(--wine);outline-offset:3px}
 
   .page{max-width:1200px;margin:0 auto;padding:0 var(--pad)}
-  .cap{font-variant-caps:all-small-caps;letter-spacing:.06em;font-weight:520;font-size:17px}
+  .cap{text-transform:uppercase;letter-spacing:.14em;font-weight:500;font-size:12px}
 
   /* line drawings: full-bleed, drawn by scroll position (see script) */
   body{overflow-x:hidden}
@@ -49,29 +55,152 @@
   .fig .s{fill:none;stroke:var(--wine);stroke-width:1.6;vector-effect:non-scaling-stroke;stroke-linecap:round;
     stroke-dasharray:1;stroke-dashoffset:1}
   .fig .d{fill:var(--wine)}
+  .fig .g{stroke:var(--stone)}
   .contact .fig .s{stroke:var(--cream-2)}
+  .contact .fig .g{stroke:var(--stone-2)}
   .contact .fig .d{fill:var(--cream)}
   @media (prefers-reduced-motion:reduce){ .fig .s{stroke-dashoffset:0} }
+
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 
   /* placeholder marker: anything in .fill still needs your real detail */
   .fill{background:rgba(74,15,29,.08);border-bottom:1px dashed var(--wine);padding:0 .15em}
 
-  /* header */
-  header{display:flex;justify-content:space-between;align-items:baseline;gap:24px;padding:28px 0 18px;border-bottom:1px solid var(--wine)}
-  header .name{font-size:21px;font-weight:560;text-decoration:none;color:var(--wine)}
-  header nav{display:flex;gap:24px}
-  header nav a{text-decoration:none}
-  header nav a:hover{text-decoration:underline}
+  /* ================= HERO + SECOND SECTION =================
+     One wrapper (.spread) holds the hero and the second section. The tower is
+     positioned in that wrapper, so it runs off the top of the screen and down the
+     left side through both, ending at the second section's bottom rule.
+     Text sits in the right-hand column of both sections. */
+  :root{--bar-h:0px}
+  .spread{position:relative}
+  .tower{position:absolute;z-index:1;left:0;top:var(--bar-h);bottom:0;width:46vw;margin:0;
+    overflow-x:visible;overflow-y:clip;pointer-events:none}
+  .tower img{display:block;height:100%;width:auto;max-width:46vw;object-fit:cover;object-position:0 0}   /* never wider than its half of the screen */
 
-  /* opening statement */
-  .open{padding:clamp(24px,4vw,56px) 0 clamp(56px,8vw,110px);border-bottom:1px solid var(--rule)}
-  .open .fig{margin-bottom:clamp(32px,5vw,72px)}
-  .open h1{
-    font-weight:330;font-variation-settings:"opsz" 72;color:var(--wine);
-    font-size:clamp(44px,7.4vw,108px);line-height:1;letter-spacing:-.022em;max-width:13ch;
+  .hero{position:relative;height:100svh;min-height:620px}
+  /* Navigation: a floating island. One burgundy blob drifts at the top centre,
+     slowly changing shape. Click it and four blobs split off it, one per link.
+     The blobs sit inside a "goo" SVG filter (blur, then a hard alpha threshold),
+     so while they pull apart they stretch and neck like liquid. The labels live
+     in a separate layer above, so the filter never blurs the text. */
+  .island{position:fixed;z-index:50;top:14px;left:auto;right:calc(var(--pad) + 36px);width:0;height:0;animation:bob 6s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(5px)}}
+  .goo{position:absolute;left:-420px;top:0;width:840px;height:660px;filter:url(#goo);pointer-events:none}
+  .blob{position:absolute;left:420px;top:44px;width:var(--w);height:var(--h);margin:calc(var(--h) / -2) 0 0 calc(var(--w) / -2);
+    background:var(--wine);border-radius:52% 48% 50% 50% / 50% 52% 48% 50%;
+    animation:morph 7s ease-in-out infinite var(--m, 0s);
+    transform:translate(0,0) scale(.3);
+    transition:transform .5s cubic-bezier(.5,0,.75,0) var(--dc, 0s)}
+  .blob.core{--w:72px;--h:72px;transform:none}
+  /* near-circles that breathe slightly out of round */
+  @keyframes morph{
+    0%,100%{border-radius:52% 48% 50% 50% / 50% 52% 48% 50%}
+    33%{border-radius:48% 52% 53% 47% / 53% 48% 52% 47%}
+    66%{border-radius:50% 50% 47% 53% / 47% 51% 49% 53%}}
+
+  .island .core-btn{position:absolute;left:-36px;top:8px;width:72px;height:72px;border:0;background:none;cursor:pointer;
+    color:var(--cream);font:inherit;font-size:16px;font-variant-caps:all-small-caps;letter-spacing:.08em;font-weight:520}
+  .island .core-btn:focus-visible{outline:2px solid var(--wine);outline-offset:4px;border-radius:50%}
+  .core-btn .lbl-close{display:none}
+  .island.is-open .core-btn .lbl-open{display:none}
+  .island.is-open .core-btn .lbl-close{display:inline}
+
+  .island ul{list-style:none;margin:0;padding:0}
+  .island li{position:absolute;left:0;top:44px;transform:translate(calc(-50% + var(--x)), calc(-50% + var(--y)));
+    opacity:0;visibility:hidden;transition:opacity .2s, visibility 0s .2s}
+  .island li{width:100px;text-align:center}
+  .island a{display:block;padding:6px 0;color:var(--cream);text-decoration:none;font-size:17px;line-height:1.15;
+    font-variation-settings:"opsz" 24}
+  .island a:hover, .island a:focus-visible{text-decoration:underline;text-underline-offset:.2em;outline:none}
+
+  /* where each blob lands, and the order it leaves in */
+  /* a quarter-circle fan, down and to the left of the island (radius 270px) */
+  .b1, .i1{--x:-270px;--y:0px;  --d:.00s;--m:-1s}
+  .b2, .i2{--x:-234px;--y:135px;--d:.06s;--m:-3s}
+  .b3, .i3{--x:-135px;--y:234px;--d:.12s;--m:-5s}
+  .b4, .i4{--x:0px;   --y:270px;--d:.18s;--m:-2s}
+  .b1, .b2, .b3, .b4{--w:124px;--h:124px}
+
+  .island.is-open .blob:not(.core){transform:translate(var(--x), var(--y)) scale(1);
+    transition:transform .9s cubic-bezier(.34,1.45,.5,1) var(--d)}
+  .island.is-open li{opacity:1;visibility:visible;transition:opacity .35s calc(var(--d) + .45s), visibility 0s}
+
+  @media (max-width:760px){
+    .island{right:56px}
+    /* phones: a column dropping straight down from the island */
+    .b1, .i1{--x:0px;--y:136px}
+    .b2, .i2{--x:0px;--y:266px}
+    .b3, .i3{--x:0px;--y:396px}
+    .b4, .i4{--x:0px;--y:526px}
+    .b1, .b2, .b3, .b4{--w:116px;--h:116px}
   }
-  .open h1 i{font-weight:300}
-  .open p{margin-top:clamp(28px,4vw,44px);max-width:34em;font-size:clamp(19px,1.7vw,22px)}
+  @media (prefers-reduced-motion:reduce){
+    .island, .blob{animation:none}
+    .blob, .island.is-open .blob:not(.core){transition:none}
+  }
+
+  .statement{position:absolute;z-index:4;left:52vw;right:var(--pad);bottom:clamp(120px,24svh,260px)}
+  .statement h1{font-weight:330;font-variation-settings:"opsz" 72;color:var(--wine);
+    font-size:clamp(46px,6vw,108px);line-height:1;letter-spacing:-.022em;max-width:12ch}
+  .cta{display:flex;align-items:center;gap:28px;margin-top:clamp(24px,3.5svh,40px)}
+  .btn{display:inline-block;background:var(--wine);color:var(--cream);text-decoration:none;padding:14px 22px;font-size:16px;font-weight:520;transition:background .25s}
+  .btn:hover{background:var(--ink)}
+  .cta .link{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--stone);padding-bottom:2px}
+  .cta .link:hover{border-bottom-color:var(--wine)}
+  .statement{animation:fadein 1.4s ease .3s both}
+  @keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .open{position:relative;border-bottom:1px solid var(--rule)}
+  /* starts a step to the right of the hero statement, following the tower's slope */
+  .steps{position:relative;z-index:3;padding:clamp(24px,3vw,48px) 0 clamp(56px,7vw,96px);
+    /* --tower-r is the tower's right edge in px, measured by the script */
+    margin-left:calc(max(52vw, var(--tower-r, 57vw) + clamp(28px,3vw,56px)) - (max(0px, (100vw - 1200px) / 2) + var(--pad)));
+    margin-right:calc(-1 * max(0px, (100vw - 1200px) / 2))}
+  .steps .cap{display:block;color:var(--stone);margin-bottom:clamp(20px,3vw,36px)}
+  .steps .l{display:block;font-weight:340;font-variation-settings:"opsz" 60;color:var(--wine);
+    font-size:clamp(24px,2.2vw,36px);line-height:1.1;letter-spacing:-.01em}
+  @media (min-width:1280px){ .steps .l{white-space:nowrap} }
+  .steps .l + .l{margin-top:.45em}
+  .steps .l2{padding-left:6%}
+  .steps .l3{padding-left:12%}
+  .steps .tail{margin:clamp(32px,4vw,56px) 0 0 18%;max-width:24em;font-size:18px;color:var(--ink)}
+  .steps .tail::before{content:"";display:block;width:40px;height:1px;background:var(--stone);margin-bottom:16px}
+  .after-spread{margin-top:clamp(24px,4vw,56px);margin-bottom:clamp(24px,4vw,56px)}
+
+  /* Narrow screens: no overlapping layers. Headline, then the tower, then the
+     intro, each in normal flow, so nothing can collide whatever the height. */
+  @media (max-width:900px){
+    .spread{display:flex;flex-direction:column}
+    .hero{order:1;height:auto;min-height:0;padding:112px var(--pad) clamp(32px,6vw,56px)}
+    .statement{position:static;animation:none}
+    .statement h1{max-width:none}
+    .cta .link{display:none}
+    .tower{order:2;position:relative;top:auto;bottom:auto;width:auto;height:auto;overflow:hidden}
+    .tower img{width:min(84vw,480px);height:auto}
+    .open{order:3}
+    .open-in{padding-top:0}
+    .steps{margin-left:0;padding-top:40px;padding-bottom:56px}
+    .steps .tail{margin-left:12%}
+  }
+
+  /* What I back: one text column on the left; the leopard sits beside it at the
+     foot of the section and bleeds off the right edge, mirroring the tower.
+     The section is only as tall as the leopard, so there is no dead space. */
+  #invest{position:relative;display:block;padding:clamp(56px,7vw,96px) 0 clamp(40px,5vw,72px);
+    min-height:calc(min(60vw,940px) * .5625 + clamp(24px,3vw,48px))}
+  #invest > *{position:relative;z-index:1}
+  #invest > h2, #invest > .body{max-width:min(54%,640px)}
+  #invest > h2{font-weight:340;font-variation-settings:"opsz" 60;font-size:clamp(28px,2.6vw,42px);line-height:1.1;
+    letter-spacing:-.015em;color:var(--wine);padding:0;margin-bottom:clamp(16px,2vw,28px)}
+  @media (min-width:561px){ #invest dl.sectors div{grid-template-columns:9em 1fr} }
+  #invest .leopard{position:absolute;z-index:0;bottom:0;width:min(60vw,940px);margin:0;
+    right:calc(-1 * (max(0px, (100vw - 1200px) / 2) + var(--pad)))}
+  #invest .leopard img{display:block;width:100%;height:auto}
+  @media (max-width:860px){
+    #invest{min-height:0;padding-bottom:calc(100vw * .56 + 16px)}
+    #invest > h2, #invest > .body{max-width:none}
+    #invest .leopard{width:calc(100% + 2 * var(--pad));right:calc(-1 * var(--pad))}
+  }
 
   /* a section = label in a narrow left column, content on the right */
   .row{display:grid;grid-template-columns:minmax(140px,1fr) 3fr;gap:clamp(20px,4vw,64px);
@@ -90,12 +219,12 @@
   /* terms: short facts, set as a table */
   table.terms{border-collapse:collapse;width:100%;margin-top:4px}
   table.terms th, table.terms td{text-align:left;padding:12px 0;border-bottom:1px solid var(--rule);vertical-align:baseline}
-  table.terms th{font-weight:420;color:var(--wine-2);width:11em;padding-right:24px}
+  table.terms th{font-weight:420;color:var(--stone);width:11em;padding-right:24px}
 
   ol.work{list-style:none;counter-reset:w}
   ol.work li{counter-increment:w;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0;border-bottom:1px solid var(--rule)}
   ol.work li:first-child{border-top:1px solid var(--rule)}
-  ol.work li::before{content:counter(w) ".";color:var(--wine-2)}
+  ol.work li::before{content:counter(w) ".";color:var(--stone)}
 
   /* contact: the one full-bleed burgundy block */
   .contact{background:var(--wine);color:var(--cream);margin-top:clamp(64px,9vw,120px)}
@@ -104,45 +233,91 @@
   .contact a{color:var(--cream)}
   .contact .fill{background:rgba(243,233,214,.12);border-bottom-color:var(--cream)}
   .contact .details{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px 48px;margin-top:clamp(40px,5vw,64px);max-width:56em}
-  .contact .details .cap{display:block;color:var(--cream-2);margin-bottom:4px}
+  .contact .details .cap{display:block;color:var(--stone-2);margin-bottom:4px}
   .contact footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:clamp(64px,8vw,110px);
-    padding-top:18px;border-top:1px solid rgba(243,233,214,.3);font-size:16px;color:var(--cream-2)}
+    padding-top:18px;border-top:1px solid rgba(201,195,186,.35);font-size:16px;color:var(--stone-2)}
+
+  /* ---- type: Meta Old French everywhere; headlines are simply set larger ---- */
+  .statement h1, .steps .l, #invest > h2, .row > h2, .contact h2{font-family:var(--display);font-weight:400}
+  .statement h1{letter-spacing:-.03em}
+  .steps .l{letter-spacing:-.02em}
+  .row > h2{font-size:22px;letter-spacing:-.01em}
+  .island .core-btn{font-family:var(--font);font-variant-caps:normal;text-transform:uppercase;font-size:11px;letter-spacing:.16em;font-weight:500}
+  .island a{font-family:var(--font);font-size:18px}
 </style>
 </head>
 <body>
 
-<div class="page">
-  <header>
-    <a class="name" href="/">Kunal Achintya</a>
-    <nav aria-label="Sections">
-      <a href="#invest">What I back</a>
-      <a href="#board">Board advisory</a>
-      <a href="#work">How I work</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+<!-- goo filter for the menu blobs: blur, then a hard alpha threshold -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="goo" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="blur"/>
+    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -9" result="goo"/>
+    <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+  </filter>
+</svg>
 
+<nav class="island" id="island" aria-label="Sections">
+  <div class="goo" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="blob b4"></span>
+    <span class="blob core"></span>
+  </div>
+  <button class="core-btn" type="button" aria-expanded="false" aria-controls="island-links">
+    <span class="lbl-open">Index</span><span class="lbl-close">Close</span>
+  </button>
+  <ul id="island-links">
+    <li class="i1"><a href="#invest">What I back</a></li>
+    <li class="i2"><a href="#board">Board advisory</a></li>
+    <li class="i3"><a href="#work">How I work</a></li>
+    <li class="i4"><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="spread">
+  <figure class="tower" aria-hidden="true">
+    <img src="assets/eiffel-bw-cutout.webp" alt="" width="736" height="1308" fetchpriority="high">
+  </figure>
+
+<section class="hero" id="top">
+
+  <div class="statement">
+    <h1><span style="white-space:nowrap">Pre-seed</span> capital and board counsel, from Bengaluru.</h1>
+    <div class="cta">
+      <a class="btn" href="#contact">Send a pitch</a>
+      <a class="link" href="#invest">What I back</a>
+    </div>
+  </div>
+</section>
+
+<section class="open" id="intro">
+  <div class="page open-in">
+      <div class="steps">
+        <span class="cap">Bengaluru — India, Asia and Europe</span>
+        <span class="l l1">I invest at pre-seed and seed,</span>
+        <span class="l l2">usually before there's much revenue,</span>
+        <span class="l l3">often before there's a finished product.</span>
+        <p class="tail">I also sit with a small number of companies as a board advisor, and work with founders in India, the rest of Asia, and Europe.</p>
+      </div>
+
+  </div>
+</section>
+</div>
+
+<div class="page">
   <main>
-    <section class="open">
-      <!-- one line, a seed point, three lines rising: an early cheque and what grows from it -->
-      <svg class="fig" data-fig="hero" viewBox="0 0 1440 420" aria-hidden="true">
+    <!-- one line, a seed point, three lines rising: an early cheque and what grows from it -->
+      <svg class="fig after-spread" data-fig viewBox="0 0 1440 420" aria-hidden="true">
         <path class="s" pathLength="1" data-a="0"    data-b=".34" d="M0 320 H560"/>
         <circle class="s" pathLength="1" data-a=".22" data-b=".55" cx="560" cy="320" r="92" transform="rotate(180 560 320)"/>
-        <path class="s" pathLength="1" data-a=".42" data-b=".86" d="M560 320 C 700 320, 760 300, 900 260 S 1180 200, 1440 200"/>
+        <path class="s g" pathLength="1" data-a=".42" data-b=".86" d="M560 320 C 700 320, 760 300, 900 260 S 1180 200, 1440 200"/>
         <path class="s" pathLength="1" data-a=".48" data-b=".94" d="M560 320 C 720 320, 780 220, 940 150 S 1220 60, 1440 56"/>
-        <path class="s" pathLength="1" data-a=".40" data-b=".80" d="M560 320 H1440"/>
+        <path class="s g" pathLength="1" data-a=".40" data-b=".80" d="M560 320 H1440"/>
         <circle class="d" r="5" data-ride="hero" cx="0" cy="320"/>
       </svg>
-      <h1>I back founders early, and stay on to <i>advise.</i></h1>
-      <p>
-        I invest at pre&#8209;seed and seed, usually before there is much revenue and often
-        before there is a finished product. I also sit with a small number of companies as a
-        board advisor. I'm based in Bengaluru and work with founders in India, the rest of Asia, and Europe.
-      </p>
-    </section>
 
     <section class="row" id="invest">
       <h2>What I back</h2>
+      <figure class="leopard" aria-hidden="true"><img src="assets/leopard-bw-cutout.webp" alt="" width="736" height="414" loading="lazy"></figure>
       <div class="body">
         <p>
           I look for founders who know a problem from the inside. Usually that means they
@@ -151,21 +326,44 @@
         </p>
         <!-- One line each. Add or remove rows as needed. -->
         <dl class="sectors">
-          <div><dt><span class="fill">Sector one</span></dt><dd><span class="fill">One sentence on what specifically interests you here.</span></dd></div>
-          <div><dt><span class="fill">Sector two</span></dt><dd><span class="fill">One sentence on what specifically interests you here.</span></dd></div>
-          <div><dt><span class="fill">Sector three</span></dt><dd><span class="fill">One sentence on what specifically interests you here.</span></dd></div>
+          <div><dt>Food and beverage</dt><dd>Cafes, restaurants and cloud kitchens. Places people come back to every week, and the kitchens that feed them.</dd></div>
+          <div><dt>Events and venues</dt><dd>Event management, weddings, and spaces people book by the hour, like sports turfs.</dd></div>
+          <div><dt>Technology</dt><dd>Software and tech companies, especially where the founder has lived the problem they're solving.</dd></div>
         </dl>
       </div>
     </section>
+
+    <!-- a measuring rule: the basics, laid out plainly -->
+    <svg class="fig" data-fig viewBox="0 0 1440 120" aria-hidden="true" style="margin-top:clamp(32px,5vw,64px)">
+      <path class="s g" pathLength="1" data-a="0" data-b=".8" d="M0 70 H1440"/>
+      <path class="s" pathLength="1" data-a="0.12" data-b="0.18" d="M0 70 V46"/>
+      <path class="s g" pathLength="1" data-a="0.16" data-b="0.22" d="M85 70 V60"/>
+      <path class="s g" pathLength="1" data-a="0.20" data-b="0.26" d="M169 70 V60"/>
+      <path class="s g" pathLength="1" data-a="0.24" data-b="0.30" d="M254 70 V60"/>
+      <path class="s" pathLength="1" data-a="0.28" data-b="0.34" d="M339 70 V46"/>
+      <path class="s g" pathLength="1" data-a="0.33" data-b="0.39" d="M424 70 V60"/>
+      <path class="s g" pathLength="1" data-a="0.37" data-b="0.43" d="M508 70 V60"/>
+      <path class="s g" pathLength="1" data-a="0.41" data-b="0.47" d="M593 70 V60"/>
+      <path class="s" pathLength="1" data-a="0.45" data-b="0.51" d="M678 70 V46"/>
+      <path class="s g" pathLength="1" data-a="0.49" data-b="0.55" d="M762 70 V60"/>
+      <path class="s g" pathLength="1" data-a="0.53" data-b="0.59" d="M847 70 V60"/>
+      <path class="s g" pathLength="1" data-a="0.57" data-b="0.63" d="M932 70 V60"/>
+      <path class="s" pathLength="1" data-a="0.61" data-b="0.67" d="M1016 70 V46"/>
+      <path class="s g" pathLength="1" data-a="0.66" data-b="0.72" d="M1101 70 V60"/>
+      <path class="s g" pathLength="1" data-a="0.70" data-b="0.76" d="M1186 70 V60"/>
+      <path class="s g" pathLength="1" data-a="0.74" data-b="0.80" d="M1271 70 V60"/>
+      <path class="s" pathLength="1" data-a="0.78" data-b="0.84" d="M1355 70 V46"/>
+      <path class="s g" pathLength="1" data-a="0.82" data-b="0.88" d="M1440 70 V60"/>
+    </svg>
 
     <section class="row" id="terms">
       <h2>The basics</h2>
       <div class="body">
         <table class="terms">
-          <tr><th>Stage</th><td>Pre&#8209;seed and seed</td></tr>
+          <tr><th>Stage</th><td>Pre-seed and seed</td></tr>
           <tr><th>Geography</th><td>India, Asia and Europe, from Bengaluru</td></tr>
-          <tr><th>Lead or follow</th><td><span class="fill">Either / lead only / follow only</span></td></tr>
-          <tr><th>Investing through</th><td><span class="fill">Fund or personal capital</span></td></tr>
+          <tr><th>Lead or follow</th><td>Either, depending on the round</td></tr>
+          <tr><th>Investing through</th><td>Personal capital</td></tr>
           <tr><th>Board advisory</th><td>A few companies at a time</td></tr>
         </table>
       </div>
@@ -174,12 +372,12 @@
     <!-- founder's line, advisor's line joining alongside, tied at regular intervals -->
     <svg class="fig" data-fig viewBox="0 0 1440 220" aria-hidden="true" style="margin-top:clamp(40px,6vw,80px)">
       <path class="s" pathLength="1" data-a="0"   data-b=".7" d="M0 80 H1440"/>
-      <path class="s" pathLength="1" data-a=".08" data-b=".8" d="M0 190 H360 C 460 190, 470 140, 560 140 H1440"/>
-      <path class="s" pathLength="1" data-a=".42" data-b=".5"  d="M640 80 V140"/>
-      <path class="s" pathLength="1" data-a=".52" data-b=".6"  d="M800 80 V140"/>
-      <path class="s" pathLength="1" data-a=".62" data-b=".7"  d="M960 80 V140"/>
-      <path class="s" pathLength="1" data-a=".72" data-b=".8"  d="M1120 80 V140"/>
-      <path class="s" pathLength="1" data-a=".82" data-b=".9"  d="M1280 80 V140"/>
+      <path class="s g" pathLength="1" data-a=".08" data-b=".8" d="M0 190 H360 C 460 190, 470 140, 560 140 H1440"/>
+      <path class="s g" pathLength="1" data-a=".42" data-b=".5"  d="M640 80 V140"/>
+      <path class="s g" pathLength="1" data-a=".52" data-b=".6"  d="M800 80 V140"/>
+      <path class="s g" pathLength="1" data-a=".62" data-b=".7"  d="M960 80 V140"/>
+      <path class="s g" pathLength="1" data-a=".72" data-b=".8"  d="M1120 80 V140"/>
+      <path class="s g" pathLength="1" data-a=".82" data-b=".9"  d="M1280 80 V140"/>
     </svg>
 
     <section class="row" id="board" style="border-top:1px solid var(--rule)">
@@ -192,19 +390,33 @@
         </p>
         <p>
           In practice it means a regular meeting with the founders, being on hand between
-          meetings, and helping with <span class="fill">e.g. fundraising, first senior hires, board structure</span>.
+          meetings, and helping with fundraising, early hiring and how the board runs.
           If you're thinking about an advisor, email me with where the company is and what
           you need help with.
         </p>
       </div>
     </section>
 
+    <!-- three commitments, one after another -->
+    <svg class="fig" data-fig viewBox="0 0 1440 200" aria-hidden="true" style="margin-top:clamp(32px,5vw,64px)">
+      <path class="s g" pathLength="1" data-a="0"   data-b=".22" d="M0 100 H312"/>
+      <circle class="s" pathLength="1" data-a=".18" data-b=".36" cx="360" cy="100" r="48" transform="rotate(180 360 100)"/>
+      <path class="s g" pathLength="1" data-a=".34" data-b=".5"  d="M408 100 H672"/>
+      <circle class="s" pathLength="1" data-a=".46" data-b=".62" cx="720" cy="100" r="48" transform="rotate(180 720 100)"/>
+      <path class="s g" pathLength="1" data-a=".6"  data-b=".76" d="M768 100 H1032"/>
+      <circle class="s" pathLength="1" data-a=".72" data-b=".88" cx="1080" cy="100" r="48" transform="rotate(180 1080 100)"/>
+      <path class="s g" pathLength="1" data-a=".86" data-b="1"   d="M1128 100 H1440"/>
+      <circle class="d" r="0" cx="360"  cy="100" data-pop=".34"/>
+      <circle class="d" r="0" cx="720"  cy="100" data-pop=".6"/>
+      <circle class="d" r="0" cx="1080" cy="100" data-pop=".86"/>
+    </svg>
+
     <section class="row" id="work">
       <h2>How I work</h2>
       <div class="body">
         <!-- Keep only the commitments you actually keep. -->
         <ol class="work">
-          <li><span>I reply to every pitch within <span class="fill">N days</span>, including the ones I pass on.</span></li>
+          <li><span>I reply to every pitch within a week, including the ones I pass on.</span></li>
           <li><span>If I pass, I tell you why.</span></li>
           <li><span>After I invest, you can call me about hiring, customers and the next raise. I don't ask for a board seat.</span></li>
         </ol>
@@ -217,7 +429,7 @@
       <h2>Portfolio</h2>
       <div class="body">
         <table class="terms">
-          <tr><th>Company</th><td>What it does, in one line · Year</td></tr>
+          <tr><th>Company</th><td>What it does, in one line — Year</td></tr>
         </table>
       </div>
     </section>
@@ -230,7 +442,7 @@
     <!-- a line arriving: into the circle, ending at a point -->
     <svg class="fig" data-fig viewBox="0 0 1440 240" aria-hidden="true" style="margin-bottom:clamp(40px,6vw,80px)">
       <path class="s" pathLength="1" data-a="0"   data-b=".6" d="M0 120 H1180"/>
-      <circle class="s" pathLength="1" data-a=".35" data-b=".85" cx="1180" cy="120" r="88" transform="rotate(180 1180 120)"/>
+      <circle class="s g" pathLength="1" data-a=".35" data-b=".85" cx="1180" cy="120" r="88" transform="rotate(180 1180 120)"/>
       <circle class="d" r="6" cx="1180" cy="120" data-pop=".8"/>
     </svg>
     <h2>Send me a few lines about what you're building or where you need help.</h2>
@@ -253,13 +465,36 @@
     </div>
     <footer>
       <span>© <span id="yr">2026</span> Kunal Achintya</span>
-      <span>founders.kunalachintya.com</span>
+      <span>ventureboard.kunalachintya.com</span>
     </footer>
   </div>
 </section>
 
 <script>
 document.getElementById('yr').textContent = new Date().getFullYear();
+
+// floating island menu: click splits it into one blob per link
+(() => {
+  const nav = document.getElementById('island'), btn = nav.querySelector('.core-btn');
+  const set = open => { nav.classList.toggle("is-open", open); btn.setAttribute('aria-expanded', open); };
+  btn.addEventListener('click', () => set(!nav.classList.contains("is-open")));
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => set(false)));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains("is-open")){ set(false); btn.focus(); } });
+  addEventListener('click', e => { if (!nav.contains(e.target)) set(false); });
+})();
+
+// keep the intro text clear of the tower: start it just past the tower's right edge
+(() => {
+  const img = document.querySelector('.tower img'), open = document.querySelector('.open');
+  const fit = () => {
+    open.style.removeProperty('--tower-r');
+    for (let i = 0; i < 3; i++)            // text width changes the section height, which changes the tower width
+      open.style.setProperty('--tower-r', Math.round(img.getBoundingClientRect().right) + 'px');
+  };
+  img.complete ? fit() : img.addEventListener('load', fit);
+  addEventListener('resize', fit);
+  document.fonts && document.fonts.ready.then(fit);
+})();
 
 /* Scroll-drawn line figures.
    Each figure gets a progress value t (0..1) from its position in the viewport.
@@ -307,6 +542,17 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     }
   }
 
+  // ---- parallax for photographs marked data-par ----
+  const par = [...document.querySelectorAll('[data-par]')].map(el => ({ el, amt: +el.dataset.par }));
+  function paintPar(){
+    for (const p of par){
+      const r = p.el.parentElement.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > innerHeight + 200) continue;
+      const q = clamp((innerHeight - r.top) / (innerHeight + r.height));
+      p.el.style.transform = `translateY(${(q - .5) * -p.amt}%)`;
+    }
+  }
+
   if (reduce){ figs.forEach(f => paint(f, 1)); return; }
 
   let running = false;
@@ -317,6 +563,7 @@ document.getElementById('yr').textContent = new Date().getFullYear();
       if (Math.abs(diff) > .0005){ f.cur += diff * .09; moving = true; } else f.cur = t;
       paint(f, f.cur);
     }
+    paintPar();
     running = moving;
     if (moving) requestAnimationFrame(frame);
   }
